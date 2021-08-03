@@ -13,7 +13,7 @@ class Stuff:
 def on_grid_random():
     x, y = rd.randint(0, 690), rd.randint(0, 690)
     return (x//10 * 10, y//10 * 10)
-#moves the snakes
+#keeps snake moving
 def move(wich_snake):
     for i in range(len(wich_snake.position) - 1, 0, -1):
         wich_snake.position[i] = (wich_snake.position[i-1][0], wich_snake.position[i-1][1])
@@ -25,7 +25,7 @@ def move(wich_snake):
         wich_snake.position[0] = (wich_snake.position[0][0] - 10, wich_snake.position[0][1])
     if wich_snake.direction == right:
         wich_snake.position[0] = (wich_snake.position[0][0] + 10, wich_snake.position[0][1])
-#keep snake moving and changes snake direction
+#changes snake direction
 def key_verify(wich_snake):
     for event in pg.event.get():
         if event.type == QUIT:
@@ -76,19 +76,18 @@ pg.init()
 screen = pg.display.set_mode((700, 700))
 #game running
 while True:
+    caption = 'Snake size ' + str(snake.points) + ' | record: ' + str(snake.record)
+    if snake.direction == ate_itself:
+        caption = 'Ate itself! Choose a new direction'
+    if snake.direction == hit_wall:
+        caption = 'It hit the wall! choose a new direction'
     cnt += 1
     clock.tick(35)
     screen.fill((255, 255, 250))
     apple.body.fill(apple.color)
-    screen.blit(apple.body, apple.position)
     snake.body.fill(snake.color)
-    caption = 'Snake size ' + str(snake.points) + ' | record: ' + str(snake.record)
-    if snake.direction == ate_itself:
-        caption = 'Ate itself! Choose a new direction'
-        print(caption)
-    if snake.direction == hit_wall:
-        caption = 'It hit the wall! choose a new direction'
-        
+    screen.blit(apple.body, apple.position)
+    
     
     pg.display.set_caption(caption)
 
